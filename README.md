@@ -23,6 +23,7 @@ The versions used are:
 * [Robot Framework Requests](https://github.com/bulkan/robotframework-requests) 0.5.0
 * [Robot Framework SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary) 4.0.0
 * [Robot Framework SSHLibrary](https://github.com/robotframework/SSHLibrary) 3.4.0
+* [Pymysql Module](https://pymysql.readthedocs.io/en/latest/) 0.9.3
 * Firefox 69.0
 * Chromium 77.0
 
