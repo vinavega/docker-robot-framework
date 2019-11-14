@@ -1,6 +1,5 @@
 FROM python:3.7-alpine3.10
 
-MAINTAINER Paul Podgorsek <ppodgorsek@users.noreply.github.com>
 LABEL description Robot Framework in Docker.
 
 # Setup volume for output
@@ -16,18 +15,20 @@ ENV SCREEN_WIDTH 1920
 ENV ROBOT_THREADS 1
 
 # Dependency versions
-ENV CHROMIUM_VERSION 77.0
+ENV CHROMIUM_VERSION 78.0
 ENV DATABASE_LIBRARY_VERSION 1.2
 ENV FAKER_VERSION 4.2.0
 ENV FIREFOX_VERSION 70.0
 ENV FTP_LIBRARY_VERSION 1.6
-ENV GECKO_DRIVER_VERSION v0.22.0
+ENV GECKO_DRIVER_VERSION v0.26.0
 ENV PABOT_VERSION 0.89
 ENV REQUESTS_VERSION 0.6.2
 ENV ROBOT_FRAMEWORK_VERSION 3.1.2
 ENV SELENIUM_LIBRARY_VERSION 4.1.0
 ENV SSH_LIBRARY_VERSION 3.4.0
 ENV XVFB_VERSION 1.20
+ENV PYMYSQL_VERSION 0.9.3
+ENV MONGODB_LIBRARY_VERSION 3.2
 
 # Prepare binaries to be executed
 COPY bin/chromedriver.sh /opt/robotframework/bin/chromedriver
@@ -58,7 +59,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
   && mv /usr/lib/chromium/chrome /usr/lib/chromium/chrome-original \
   && ln -sfv /opt/robotframework/bin/chromium-browser /usr/lib/chromium/chrome \
 # FIXME: above is a workaround, as the path is ignored
-
 # Install Robot Framework and Selenium Library
   && pip3 install \
     --no-cache-dir \
@@ -70,8 +70,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-requests==$REQUESTS_VERSION \
     robotframework-seleniumlibrary==$SELENIUM_LIBRARY_VERSION \
     robotframework-sshlibrary==$SSH_LIBRARY_VERSION \
+    pymysql==$PYMYSQL_VERSION \
+    robotframework-mongodb-library==$MONGODB_LIBRARY_VERSION \
     PyYAML \
-
 # Download Gecko drivers directly from the GitHub repository
   && wget -q "https://github.com/mozilla/geckodriver/releases/download/$GECKO_DRIVER_VERSION/geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz" \
     && tar xzf geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz \
