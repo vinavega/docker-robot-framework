@@ -28,7 +28,8 @@ ENV ROBOT_FRAMEWORK_VERSION 3.1.2
 ENV SELENIUM_LIBRARY_VERSION 4.1.0
 ENV SSH_LIBRARY_VERSION 3.4.0
 ENV XVFB_VERSION 1.20
-ENV PYMYSQL_VERSION 0.9.3 
+ENV PYMYSQL_VERSION 0.9.3
+ENV MONGODB_LIBRARY_VERSION 3.2
 
 # Prepare binaries to be executed
 COPY bin/chromedriver.sh /opt/robotframework/bin/chromedriver
@@ -72,6 +73,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-seleniumlibrary==$SELENIUM_LIBRARY_VERSION \
     robotframework-sshlibrary==$SSH_LIBRARY_VERSION \
     pymysql==$PYMYSQL_VERSION \
+    robotframework-mongodb-library==$MONGODB_LIBRARY_VERSION \
     PyYAML \
 
 # Download Gecko drivers directly from the GitHub repository
