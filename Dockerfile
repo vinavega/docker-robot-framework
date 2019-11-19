@@ -29,6 +29,7 @@ ENV SSH_LIBRARY_VERSION 3.4.0
 ENV XVFB_VERSION 1.20
 ENV PYMYSQL_VERSION 0.9.3
 ENV MONGODB_LIBRARY_VERSION 3.2
+ENV PYMONGO_VERSION 3.9.0
 
 # Prepare binaries to be executed
 COPY bin/chromedriver.sh /opt/robotframework/bin/chromedriver
@@ -70,8 +71,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-requests==$REQUESTS_VERSION \
     robotframework-seleniumlibrary==$SELENIUM_LIBRARY_VERSION \
     robotframework-sshlibrary==$SSH_LIBRARY_VERSION \
-    pymysql==$PYMYSQL_VERSION \
     robotframework-mongodb-library==$MONGODB_LIBRARY_VERSION \
+    pymysql==$PYMYSQL_VERSION \
+    pymongo==$PYMONGO_VERSION \
     PyYAML \
 # Download Gecko drivers directly from the GitHub repository
   && wget -q "https://github.com/mozilla/geckodriver/releases/download/$GECKO_DRIVER_VERSION/geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz" \
@@ -79,7 +81,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     && mkdir -p /opt/robotframework/drivers/ \
     && mv geckodriver /opt/robotframework/drivers/geckodriver \
     && rm geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz \
-  && apk del --no-cache --update-cache .build-deps
+  && apk del --no-cache --update-cache .build-deps \
+  && pip3 list
 
 # Update system path
 ENV PATH=/opt/robotframework/bin:/opt/robotframework/drivers:$PATH
