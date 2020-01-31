@@ -30,7 +30,7 @@ ENV XVFB_VERSION 1.20
 ENV PYMYSQL_VERSION 0.9.3
 ENV MONGODB_LIBRARY_VERSION 3.2
 ENV PYMONGO_VERSION 3.9.0
-
+ENV PSYCOPG2_VERSION 2.8.4
 # Prepare binaries to be executed
 COPY bin/chromedriver.sh /opt/robotframework/bin/chromedriver
 COPY bin/chromium-browser.sh /opt/robotframework/bin/chromium-browser
@@ -74,6 +74,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-mongodb-library==$MONGODB_LIBRARY_VERSION \
     pymysql==$PYMYSQL_VERSION \
     pymongo==$PYMONGO_VERSION \
+    psycopg2==$PSYCOPG2_VERSION \
     PyYAML \
 # Download Gecko drivers directly from the GitHub repository
   && wget -q "https://github.com/mozilla/geckodriver/releases/download/$GECKO_DRIVER_VERSION/geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz" \
