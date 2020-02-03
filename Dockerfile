@@ -42,6 +42,7 @@ ENV PYMYSQL_VERSION 0.9.3
 ENV MONGODB_LIBRARY_VERSION 3.2
 ENV PYMONGO_VERSION 3.9.0
 ENV PSYCOPG2_VERSION 2.8.4
+ENV LIBPQ-DEV_VERSION 9.4.3
 # Prepare binaries to be executed
 COPY bin/chromedriver.sh /opt/robotframework/bin/chromedriver
 COPY bin/chromium-browser.sh /opt/robotframework/bin/chromium-browser
@@ -52,6 +53,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
   && apk update \
+  && apk add postgresql-dev \
   && apk --no-cache upgrade \
   && apk --no-cache --virtual .build-deps add \
     gcc \
