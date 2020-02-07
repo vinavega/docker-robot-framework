@@ -43,6 +43,8 @@ ENV MONGODB_LIBRARY_VERSION 3.2
 ENV PYMONGO_VERSION 3.9.0
 ENV PSYCOPG2_VERSION 2.8.4
 ENV LIBPQ-DEV_VERSION 9.4.3
+ENV REQUESTSMODULE_VERSION 2.22.0
+ENV TESTABILITYLIBRARY_VERSION 0.9
 # Prepare binaries to be executed
 COPY bin/chromedriver.sh /opt/robotframework/bin/chromedriver
 COPY bin/chromium-browser.sh /opt/robotframework/bin/chromium-browser
@@ -86,6 +88,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-seleniumlibrary==$SELENIUM_LIBRARY_VERSION \
     robotframework-sshlibrary==$SSH_LIBRARY_VERSION \
     robotframework-mongodb-library==$MONGODB_LIBRARY_VERSION \
+    robotframework-seleniumtestability==$TESTABILITYLIBRARY_VERSION \
+    requests==$REQUESTSMODULE_VERSION \
     pymysql==$PYMYSQL_VERSION \
     pymongo==$PYMONGO_VERSION \
     psycopg2==$PSYCOPG2_VERSION \
