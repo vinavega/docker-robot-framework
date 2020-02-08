@@ -29,10 +29,6 @@ The versions used are:
 * [Pymysql](https://pypi.org/project/PyMySQL/) 0.9.3
 * Firefox 72.0
 * Chromium 79.0
-<<<<<<< HEAD
-
-=======
->>>>>>> cd49019e8bd7b8162a1d454edcfedcce7131008b
 
 As stated by [the official GitHub project](https://github.com/robotframework/Selenium2Library), starting from version 3.0, Selenium2Library is renamed to SeleniumLibrary and this project exists mainly to help with transitioning. The Selenium2Library 3.0.0 is also the last release and for new releases, please look at the [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary) project.
 
