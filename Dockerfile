@@ -23,31 +23,27 @@ ENV SCREEN_WIDTH 1920
 ENV ROBOT_THREADS 1
 
 # Dependency versions
-ENV CHROMIUM_VERSION 78.0
-ENV DATABASE_LIBRARY_VERSION 1.2
-ENV FAKER_VERSION 4.2.0
-ENV FIREFOX_VERSION 70.0
-ENV FTP_LIBRARY_VERSION 1.6
-ENV GECKO_DRIVER_VERSION v0.26.0
-ENV PABOT_VERSION 0.89
 ENV ALPINE_GLIBC 2.30-r0
 ENV CHROMIUM_VERSION 79.0
 ENV DATABASE_LIBRARY_VERSION 1.2
-ENV FAKER_VERSION 4.3.0
+ENV FAKER_VERSION 5.0.0
 ENV FIREFOX_VERSION 72.0
 ENV FTP_LIBRARY_VERSION 1.8
 ENV GECKO_DRIVER_VERSION v0.26.0
 ENV IMAP_LIBRARY_VERSION 0.3.0
-ENV PABOT_VERSION 0.96
+ENV PABOT_VERSION 1.0.0
 ENV REQUESTS_VERSION 0.6.2
 ENV ROBOT_FRAMEWORK_VERSION 3.1.2
-ENV SELENIUM_LIBRARY_VERSION 4.1.0
+ENV SELENIUM_LIBRARY_VERSION 4.3.0
 ENV SSH_LIBRARY_VERSION 3.4.0
 ENV XVFB_VERSION 1.20
 ENV PYMYSQL_VERSION 0.9.3
 ENV MONGODB_LIBRARY_VERSION 3.2
 ENV PYMONGO_VERSION 3.9.0
 ENV PSYCOPG2_VERSION 2.8.4
+ENV LIBPQ-DEV_VERSION 9.4.3
+ENV REQUESTSMODULE_VERSION 2.22.0
+ENV TESTABILITYLIBRARY_VERSION 0.9
 # Prepare binaries to be executed
 COPY bin/chromedriver.sh /opt/robotframework/bin/chromedriver
 COPY bin/chromium-browser.sh /opt/robotframework/bin/chromium-browser
@@ -58,6 +54,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
   && apk update \
+  && apk add postgresql-dev \
   && apk --no-cache upgrade \
   && apk --no-cache --virtual .build-deps add \
     gcc \
@@ -90,6 +87,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-seleniumlibrary==$SELENIUM_LIBRARY_VERSION \
     robotframework-sshlibrary==$SSH_LIBRARY_VERSION \
     robotframework-mongodb-library==$MONGODB_LIBRARY_VERSION \
+    robotframework-seleniumtestability==$TESTABILITYLIBRARY_VERSION \
+    requests==$REQUESTSMODULE_VERSION \
     pymysql==$PYMYSQL_VERSION \
     pymongo==$PYMONGO_VERSION \
     psycopg2==$PSYCOPG2_VERSION \
@@ -109,8 +108,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     && mkdir -p /opt/robotframework/drivers/ \
     && mv geckodriver /opt/robotframework/drivers/geckodriver \
     && rm geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz \
-  && apk del --no-cache --update-cache .build-deps
-
+    && apk del --no-cache --update-cache .build-deps
 
 # Update system path
 ENV PATH=/opt/robotframework/bin:/opt/robotframework/drivers:$PATH

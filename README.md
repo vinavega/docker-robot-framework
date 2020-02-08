@@ -17,19 +17,22 @@ The versions used are:
 
 * [Robot Framework](https://github.com/robotframework/robotframework) 3.1.2
 * [Robot Framework DatabaseLibrary](https://github.com/franz-see/Robotframework-Database-Library) 1.2 
-* [Robot Framework Faker](https://github.com/guykisel/robotframework-faker) 4.3.0
+* [Robot Framework Faker](https://github.com/guykisel/robotframework-faker) 5.0.0
 * [Robot Framework FTPLibrary](https://github.com/kowalpy/Robot-Framework-FTP-Library) 1.8
 * [Robot Framework IMAPLibrary](https://github.com/rickypc/robotframework-imaplibrary) 0.3.0
-* [Robot Framework Pabot](https://github.com/mkorpela/pabot) 0.96
+* [Robot Framework Pabot](https://github.com/mkorpela/pabot) 1.0.0
 * [Robot Framework Requests](https://github.com/bulkan/robotframework-requests) 0.6.2
-* [Robot Framework SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary) 4.1.0
+* [Robot Framework SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary) 4.2.0
 * [Robot Framework SSHLibrary](https://github.com/robotframework/SSHLibrary) 3.4.0
 * [Pymongo](https://pypi.org/project/pymongo/) 3.9.0
 * [Robot Framework MongoDB Library](https://pypi.org/project/robotframework-mongodb-library/) 3.2
 * [Pymysql](https://pypi.org/project/PyMySQL/) 0.9.3
 * Firefox 72.0
 * Chromium 79.0
+<<<<<<< HEAD
 
+=======
+>>>>>>> cd49019e8bd7b8162a1d454edcfedcce7131008b
 
 As stated by [the official GitHub project](https://github.com/robotframework/Selenium2Library), starting from version 3.0, Selenium2Library is renamed to SeleniumLibrary and this project exists mainly to help with transitioning. The Selenium2Library 3.0.0 is also the last release and for new releases, please look at the [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary) project.
 
