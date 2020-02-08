@@ -2,8 +2,16 @@ FROM python:3.7-alpine3.10
 
 LABEL description Robot Framework in Docker.
 
-# Setup volume for output
-VOLUME /opt/robotframework/reports
+# Set the reports directory environment variable
+# By default, the directory is /opt/robotframework/reports
+ENV ROBOT_REPORTS_DIR /opt/robotframework/reports
+
+# Set the tests directory environment variable
+# By default, the directory is /opt/robotframework/tests
+ENV ROBOT_TESTS_DIR /opt/robotframework/tests
+
+# Set up a volume for the generated reports
+VOLUME ${ROBOT_REPORTS_DIR}
 
 # Setup X Window Virtual Framebuffer
 ENV SCREEN_COLOUR_DEPTH 24
@@ -22,6 +30,15 @@ ENV FIREFOX_VERSION 70.0
 ENV FTP_LIBRARY_VERSION 1.6
 ENV GECKO_DRIVER_VERSION v0.26.0
 ENV PABOT_VERSION 0.89
+ENV ALPINE_GLIBC 2.30-r0
+ENV CHROMIUM_VERSION 79.0
+ENV DATABASE_LIBRARY_VERSION 1.2
+ENV FAKER_VERSION 4.3.0
+ENV FIREFOX_VERSION 72.0
+ENV FTP_LIBRARY_VERSION 1.8
+ENV GECKO_DRIVER_VERSION v0.26.0
+ENV IMAP_LIBRARY_VERSION 0.3.0
+ENV PABOT_VERSION 0.96
 ENV REQUESTS_VERSION 0.6.2
 ENV ROBOT_FRAMEWORK_VERSION 3.1.2
 ENV SELENIUM_LIBRARY_VERSION 4.1.0
@@ -67,6 +84,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-databaselibrary==$DATABASE_LIBRARY_VERSION \
     robotframework-faker==$FAKER_VERSION \
     robotframework-ftplibrary==$FTP_LIBRARY_VERSION \
+    robotframework-imaplibrary==$IMAP_LIBRARY_VERSION \
     robotframework-pabot==$PABOT_VERSION \
     robotframework-requests==$REQUESTS_VERSION \
     robotframework-seleniumlibrary==$SELENIUM_LIBRARY_VERSION \
@@ -76,14 +94,23 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     pymongo==$PYMONGO_VERSION \
     psycopg2==$PSYCOPG2_VERSION \
     PyYAML \
+# Download the glibc package for Alpine Linux from its GitHub repository
+  && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+    && wget -q "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$ALPINE_GLIBC/glibc-$ALPINE_GLIBC.apk" \
+    && wget -q "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$ALPINE_GLIBC/glibc-bin-$ALPINE_GLIBC.apk" \
+    && apk add glibc-$ALPINE_GLIBC.apk \
+    && apk add glibc-bin-$ALPINE_GLIBC.apk \
+    && rm glibc-$ALPINE_GLIBC.apk \
+    && rm glibc-bin-$ALPINE_GLIBC.apk \
+    && rm /etc/apk/keys/sgerrand.rsa.pub \
 # Download Gecko drivers directly from the GitHub repository
   && wget -q "https://github.com/mozilla/geckodriver/releases/download/$GECKO_DRIVER_VERSION/geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz" \
     && tar xzf geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz \
     && mkdir -p /opt/robotframework/drivers/ \
     && mv geckodriver /opt/robotframework/drivers/geckodriver \
     && rm geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz \
-  && apk del --no-cache --update-cache .build-deps \
-  && pip3 list
+  && apk del --no-cache --update-cache .build-deps
+
 
 # Update system path
 ENV PATH=/opt/robotframework/bin:/opt/robotframework/drivers:$PATH

@@ -17,17 +17,19 @@ The versions used are:
 
 * [Robot Framework](https://github.com/robotframework/robotframework) 3.1.2
 * [Robot Framework DatabaseLibrary](https://github.com/franz-see/Robotframework-Database-Library) 1.2 
-* [Robot Framework Faker](https://github.com/guykisel/robotframework-faker) 4.2.0
-* [Robot Framework FTPLibrary](https://github.com/kowalpy/Robot-Framework-FTP-Library) 1.6
-* [Robot Framework Pabot](https://github.com/mkorpela/pabot) 0.89
+* [Robot Framework Faker](https://github.com/guykisel/robotframework-faker) 4.3.0
+* [Robot Framework FTPLibrary](https://github.com/kowalpy/Robot-Framework-FTP-Library) 1.8
+* [Robot Framework IMAPLibrary](https://github.com/rickypc/robotframework-imaplibrary) 0.3.0
+* [Robot Framework Pabot](https://github.com/mkorpela/pabot) 0.96
 * [Robot Framework Requests](https://github.com/bulkan/robotframework-requests) 0.6.2
 * [Robot Framework SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary) 4.1.0
 * [Robot Framework SSHLibrary](https://github.com/robotframework/SSHLibrary) 3.4.0
 * [Pymongo](https://pypi.org/project/pymongo/) 3.9.0
 * [Robot Framework MongoDB Library](https://pypi.org/project/robotframework-mongodb-library/) 3.2
 * [Pymysql](https://pypi.org/project/PyMySQL/) 0.9.3
-* Firefox 70.0
-* Chromium 78.0
+* Firefox 72.0
+* Chromium 79.0
+
 
 As stated by [the official GitHub project](https://github.com/robotframework/Selenium2Library), starting from version 3.0, Selenium2Library is renamed to SeleniumLibrary and this project exists mainly to help with transitioning. The Selenium2Library 3.0.0 is also the last release and for new releases, please look at the [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary) project.
 
@@ -46,13 +48,20 @@ Browsers can be easily switched. It is recommended to define `${BROWSER} %{BROWS
 
 When running your tests, simply add `-e BROWSER=chrome` or `-e BROWSER=firefox` to the run command.
 
-### Changing the container screen's resolution
+### Changing the container's screen resolution
 
 It is possible to define the settings of the virtual screen in which the browser is run by changing several environment variables:
 
 * `SCREEN_COLOUR_DEPTH` (default: 24)
 * `SCREEN_HEIGHT` (default: 1080)
 * `SCREEN_WIDTH` (default: 1920)
+
+### Changing the container's tests and reports directories
+
+It is possible to use different directories to read tests from and to generate reports to. This is useful when using a complex test file structure. To change the defaults, set the following environment variables:
+
+* `ROBOT_REPORTS_DIR` (default: /opt/robotframework/reports)
+* `ROBOT_TESTS_DIR` (default: /opt/robotframework/tests)
 
 ### Parallelisation
 
@@ -71,6 +80,12 @@ RobotFramework supports many options such as `--exclude`, `--variable`, `--logle
     docker run \
         -e ROBOT_OPTIONS="--loglevel DEBUG" \
         ppodgorsek/robot-framework:latest
+
+### Testing emails
+
+This project includes the IMAP library which allows Robot Framework to connect to email servers.
+
+A suggestion to automate email testing is to run a [Mailcatcher instance in Docker which allows IMAP connections](https://github.com/estelora/docker-mailcatcher-imap). This will ensure emails are discarded once the tests have been run.
 
 ## Testing this project
 
