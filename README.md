@@ -27,7 +27,7 @@ The versions used are:
 * [Pymongo](https://pypi.org/project/pymongo/) 3.9.0
 * [Robot Framework MongoDB Library](https://pypi.org/project/robotframework-mongodb-library/) 3.2
 * [Pymysql](https://pypi.org/project/PyMySQL/) 0.9.3
-* Firefox 72.0
+* Firefox 73.0
 * Chromium 79.0
 
 As stated by [the official GitHub project](https://github.com/robotframework/Selenium2Library), starting from version 3.0, Selenium2Library is renamed to SeleniumLibrary and this project exists mainly to help with transitioning. The Selenium2Library 3.0.0 is also the last release and for new releases, please look at the [SeleniumLibrary](https://github.com/robotframework/SeleniumLibrary) project.
