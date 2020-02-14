@@ -28,7 +28,7 @@ ENV ALPINE_GLIBC 2.30-r0
 ENV CHROMIUM_VERSION 79.0
 ENV DATABASE_LIBRARY_VERSION 1.2
 ENV FAKER_VERSION 5.0.0
-ENV FIREFOX_VERSION 72.0
+ENV FIREFOX_VERSION 73.0
 ENV FTP_LIBRARY_VERSION 1.8
 ENV GECKO_DRIVER_VERSION v0.26.0
 ENV IMAP_LIBRARY_VERSION 0.3.0
@@ -78,7 +78,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
 # Install Robot Framework and Selenium Library
   && pip3 install \
     --no-cache-dir \
-    robotframework==$ROBOT_FRAMEWORK_VERSION \
+    robotframework-BDD-PTBR \
     robotframework-databaselibrary==$DATABASE_LIBRARY_VERSION \
     robotframework-faker==$FAKER_VERSION \
     robotframework-ftplibrary==$FTP_LIBRARY_VERSION \
