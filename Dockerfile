@@ -77,7 +77,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
 # Install Robot Framework and Selenium Library
   && pip3 install \
     --no-cache-dir \
-    robotframework-BDD-PTBR \
+    robotframework==${ROBOT_FRAMEWORK_VERSION} \
     robotframework-databaselibrary==$DATABASE_LIBRARY_VERSION \
     robotframework-faker==$FAKER_VERSION \
     robotframework-ftplibrary==$FTP_LIBRARY_VERSION \
