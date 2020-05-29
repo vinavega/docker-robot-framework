@@ -1,17 +1,15 @@
-FROM python:3.7-alpine3.10
+FROM python:3.8-alpine3.11
 
 LABEL description Robot Framework in Docker.
 
 # Set the reports directory environment variable
-# By default, the directory is /opt/robotframework/reports
 ENV ROBOT_REPORTS_DIR /opt/robotframework/reports
 
 # Set the tests directory environment variable
-# By default, the directory is /opt/robotframework/tests
 ENV ROBOT_TESTS_DIR /opt/robotframework/tests
 
-# Set up a volume for the generated reports
-VOLUME ${ROBOT_REPORTS_DIR}
+# Set the working directory environment variable
+ENV ROBOT_WORK_DIR /opt/robotframework/temp
 
 # Setup X Window Virtual Framebuffer
 ENV SCREEN_COLOUR_DEPTH 24
@@ -22,17 +20,21 @@ ENV SCREEN_WIDTH 1920
 # By default, no parallelisation
 ENV ROBOT_THREADS 1
 
+# Define the default user who'll run the tests
+ENV ROBOT_UID 1000
+ENV ROBOT_GID 1000
+
 # Dependency versions
-ENV ALPINE_GLIBC 2.30-r0
-ENV CHROMIUM_VERSION 79.0
+ENV ALPINE_GLIBC 2.31-r0
+ENV CHROMIUM_VERSION 81.0
 ENV DATABASE_LIBRARY_VERSION 1.2
 ENV FAKER_VERSION 5.0.0
-ENV FIREFOX_VERSION 73.0
-ENV FTP_LIBRARY_VERSION 1.8
+ENV FIREFOX_VERSION 68
+ENV FTP_LIBRARY_VERSION 1.9
 ENV GECKO_DRIVER_VERSION v0.26.0
-ENV IMAP_LIBRARY_VERSION 0.3.0
-ENV PABOT_VERSION 1.0.0
-ENV REQUESTS_VERSION 0.6.2
+ENV IMAP_LIBRARY_VERSION 0.3.6
+ENV PABOT_VERSION 1.2.1
+ENV REQUESTS_VERSION 0.6.6
 ENV ROBOT_FRAMEWORK_VERSION 3.1.2
 ENV SELENIUM_LIBRARY_VERSION 4.3.0
 ENV SSH_LIBRARY_VERSION 3.4.0
@@ -68,7 +70,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
   && apk --no-cache add \
     "chromium~$CHROMIUM_VERSION" \
     "chromium-chromedriver~$CHROMIUM_VERSION" \
-    "firefox~$FIREFOX_VERSION" \
+    "firefox-esr~$FIREFOX_VERSION" \
     xauth \
     "xvfb-run~$XVFB_VERSION" \
   && mv /usr/lib/chromium/chrome /usr/lib/chromium/chrome-original \
@@ -81,7 +83,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-databaselibrary==$DATABASE_LIBRARY_VERSION \
     robotframework-faker==$FAKER_VERSION \
     robotframework-ftplibrary==$FTP_LIBRARY_VERSION \
-    robotframework-imaplibrary==$IMAP_LIBRARY_VERSION \
+    robotframework-imaplibrary2==$IMAP_LIBRARY_VERSION \
     robotframework-pabot==$PABOT_VERSION \
     robotframework-requests==$REQUESTS_VERSION \
     robotframework-seleniumlibrary==$SELENIUM_LIBRARY_VERSION \
@@ -110,8 +112,28 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     && rm geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz \
     && apk del --no-cache --update-cache .build-deps
 
+# Create the default report and work folders with the default user to avoid runtime issues
+# These folders are writeable by anyone, to ensure the user can be changed on the command line.
+RUN mkdir -p ${ROBOT_REPORTS_DIR} \
+  && mkdir -p ${ROBOT_WORK_DIR} \
+  && chown ${ROBOT_UID}:${ROBOT_GID} ${ROBOT_REPORTS_DIR} \
+  && chown ${ROBOT_UID}:${ROBOT_GID} ${ROBOT_WORK_DIR} \
+  && chmod ugo+w ${ROBOT_REPORTS_DIR} ${ROBOT_WORK_DIR}
+
+# Allow any user to write logs
+RUN chmod ugo+w /var/log \
+  && chown ${ROBOT_UID}:${ROBOT_GID} /var/log
+
 # Update system path
 ENV PATH=/opt/robotframework/bin:/opt/robotframework/drivers:$PATH
+
+# Set up a volume for the generated reports
+VOLUME ${ROBOT_REPORTS_DIR}
+
+USER ${ROBOT_UID}:${ROBOT_GID}
+
+# A dedicated work folder to allow for the creation of temporary files
+WORKDIR ${ROBOT_WORK_DIR}
 
 # Execute all robot tests
 CMD ["run-tests-in-virtual-screen.sh"]
