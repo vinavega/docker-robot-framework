@@ -46,20 +46,21 @@ ENV PSYCOPG2_VERSION 2.8.4
 ENV LIBPQ-DEV_VERSION 9.4.3
 ENV REQUESTSMODULE_VERSION 2.22.0
 ENV TESTABILITYLIBRARY_VERSION 0.9
+
 # Prepare binaries to be executed
 COPY bin/chromedriver.sh /opt/robotframework/bin/chromedriver
 COPY bin/chromium-browser.sh /opt/robotframework/bin/chromium-browser
 COPY bin/run-tests-in-virtual-screen.sh /opt/robotframework/bin/
 
 # Install system dependencies
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-  && apk update \
-  && apk add postgresql-dev \
+RUN apk update \
   && apk --no-cache upgrade \
   && apk --no-cache --virtual .build-deps add \
     gcc \
+    postgresql-libs \
+    postgresql-dev \
+    python3-dev \
+    musl-dev \
     libffi-dev \
     linux-headers \
     make \
@@ -79,7 +80,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
 # Install Robot Framework and Selenium Library
   && pip3 install \
     --no-cache-dir \
-    robotframework==${ROBOT_FRAMEWORK_VERSION} \
+    robotframework==$ROBOT_FRAMEWORK_VERSION \
     robotframework-databaselibrary==$DATABASE_LIBRARY_VERSION \
     robotframework-faker==$FAKER_VERSION \
     robotframework-ftplibrary==$FTP_LIBRARY_VERSION \
@@ -88,13 +89,14 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     robotframework-requests==$REQUESTS_VERSION \
     robotframework-seleniumlibrary==$SELENIUM_LIBRARY_VERSION \
     robotframework-sshlibrary==$SSH_LIBRARY_VERSION \
+    PyYAML \
+    robotframework-sshlibrary==$SSH_LIBRARY_VERSION \
     robotframework-mongodb-library==$MONGODB_LIBRARY_VERSION \
     robotframework-seleniumtestability==$TESTABILITYLIBRARY_VERSION \
     requests==$REQUESTSMODULE_VERSION \
     pymysql==$PYMYSQL_VERSION \
     pymongo==$PYMONGO_VERSION \
     psycopg2==$PSYCOPG2_VERSION \
-    PyYAML \
 # Download the glibc package for Alpine Linux from its GitHub repository
   && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
     && wget -q "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$ALPINE_GLIBC/glibc-$ALPINE_GLIBC.apk" \
@@ -110,7 +112,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     && mkdir -p /opt/robotframework/drivers/ \
     && mv geckodriver /opt/robotframework/drivers/geckodriver \
     && rm geckodriver-$GECKO_DRIVER_VERSION-linux64.tar.gz \
-    && apk del --no-cache --update-cache .build-deps
+  && apk del --no-cache --update-cache .build-deps
 
 # Create the default report and work folders with the default user to avoid runtime issues
 # These folders are writeable by anyone, to ensure the user can be changed on the command line.
